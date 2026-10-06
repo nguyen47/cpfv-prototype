@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Attachment 7-B · Interactive prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&family=Roboto+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app" class="shell">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">CPFV</span>
+      <div class="brand-text">
+        <span class="brand-title" id="meta-title">Attachment 7-B · Interactive prototype</span>
+        <span class="brand-sub" id="meta-sub"></span>
+      </div>
+    </div>
+    <div class="topbar-center" id="crumb"></div>
+    <div class="topbar-actions">
+      <label class="jump"><span>Go to</span><input id="jump" type="text" placeholder="23-05" spellcheck="false" autocomplete="off"></label>
+      <button class="tb" id="btn-map" title="Flow map (M)">Flow map</button>
+      <button class="tb toggle" id="btn-taps" title="Show tappable areas (T)">Tappable areas</button>
+      <button class="tb toggle" id="btn-tour" title="Auto-advance (P)">Tour</button>
+      <button class="tb" id="btn-help" title="Keyboard shortcuts (?)">?</button>
+    </div>
+  </header>
+
+  <aside class="rail" id="rail"></aside>
+
+  <main class="stage">
+    <div class="stage-head">
+      <button class="nav" id="btn-prev" title="Previous step (←)">‹</button>
+      <div class="stage-title" id="stage-title"></div>
+      <div class="stage-tools" id="stage-tools"></div>
+      <button class="nav" id="btn-next" title="Next step (→)">›</button>
+    </div>
+    <div class="stage-body" id="stage-body"></div>
+    <div class="tour-bar" id="tour-bar"><div class="tour-fill" id="tour-fill"></div></div>
+  </main>
+
+  <aside class="notes" id="notes"></aside>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="overlay" id="overlay" hidden>
+    <div class="overlay-inner">
+      <div class="overlay-head"><span id="overlay-title"></span><button class="tb" id="overlay-close">Close (Esc)</button></div>
+      <div class="overlay-body" id="overlay-body"></div>
+    </div>
+  </div>
+</div>
+
+<script src="dist/screens.js"></script>
+<script src="content/flows.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
