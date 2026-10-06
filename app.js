@@ -25,6 +25,8 @@
   const FLOWS = window.FLOWS || [];
   const FLOW_META = window.FLOW_META || {};
   const BEZEL = 10; // phone frame draws a 10px bezel via box-shadow
+  const narrowMq = window.matchMedia('(max-width: 1024px)'); // phones and small tablets: drawers, one frame, fit to width
+  const isNarrow = () => narrowMq.matches;
 
   // ---------- indexes ----------
   const steps = []; // flat list with flow pointers
@@ -61,7 +63,7 @@
     return { app: s.app, portal: s.portal, primary: s.primary };
   }
   function effectiveLayout(view) {
-    if (view.app && view.portal) return state.layout || 'both';
+    if (view.app && view.portal) return state.layout || (isNarrow() ? view.primary : 'both');
     return view.app ? 'app' : 'portal';
   }
 
@@ -125,9 +127,10 @@
 
   function fitScales(view, layout) {
     const rect = stageBody.getBoundingClientRect();
-    const W = Math.max(320, rect.width - 32), H = Math.max(240, rect.height - 56); // caption room
+    const narrow = isNarrow();
+    const W = Math.max(280, rect.width - (narrow ? 20 : 32)), H = Math.max(240, rect.height - 56); // caption room
     const app = [393 + BEZEL * 2, 852 + BEZEL * 2], por = [1440, 900];
-    const fit = (d, w, hh) => Math.min(hh / d[1], w / d[0], 1);
+    const fit = (d, w, hh) => narrow ? Math.min(w / d[0], 1) : Math.min(hh / d[1], w / d[0], 1); // phones: fill the width, scroll if tall
     if (layout === 'app') return { mode: 'single', app: fit(app, W, H) };
     if (layout === 'portal') return { mode: 'single', portal: fit(por, W, H) };
     if (W >= 1200) {
@@ -162,6 +165,7 @@
     }
     document.body.classList.toggle('show-taps', state.taps);
     requestAnimationFrame(placePins);
+    if (isNarrow() && layout !== 'app' && !state.hintedPortal) { state.hintedPortal = true; toast('Desktop screen: pinch to zoom, or turn your phone sideways'); }
 
     // head
     stageTitle.innerHTML = '';
@@ -292,6 +296,7 @@
     if (!s) return;
     const changedFlow = s.flow !== state.step.flow;
     state.step = s; state.explore = null; state.layout = null; state.history = [];
+    closeDrawers();
     renderRail(); renderStage(); setHash(s.primaryId);
     if (!opts.keepTour && state.tour) restartTour();
     if (changedFlow) toast(`${s.flow.sn} · ${s.flow.title}`);
@@ -470,6 +475,15 @@
   $('#btn-prev').addEventListener('click', prev);
   $('#btn-next').addEventListener('click', next);
   window.addEventListener('resize', () => renderStage());
+
+  // ---------- drawers (phones and small tablets) ----------
+  const shell = document.getElementById('app');
+  function closeDrawers() { shell.classList.remove('rail-open', 'notes-open'); }
+  function toggleDrawer(name) { const on = !shell.classList.contains(name); closeDrawers(); if (on) shell.classList.add(name); }
+  $('#btn-rail').addEventListener('click', () => toggleDrawer('rail-open'));
+  $('#btn-notes').addEventListener('click', () => toggleDrawer('notes-open'));
+  $('#scrim').addEventListener('click', closeDrawers);
+  narrowMq.addEventListener('change', () => { closeDrawers(); state.layout = null; renderStage(); });
 
   // ---------- boot ----------
   $('#meta-title').textContent = FLOW_META.title || document.title;

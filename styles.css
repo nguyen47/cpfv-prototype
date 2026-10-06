@@ -240,3 +240,44 @@ button { font-family: inherit; }
   :root { --notes-w: 300px; --rail-w: 240px; }
   .brand-sub, .jump span { display: none; }
 }
+
+/* ---------- phones and small tablets (≤1024px): rail and notes become drawers, the stage takes the full width ---------- */
+.m-only { display: none; }
+.tb .short { display: none; }
+.scrim { display: none; }
+@media (max-width: 1024px) {
+  :root { --top-h: 48px; }
+  .shell, .shell.rail-collapsed, .shell.notes-collapsed, .shell.rail-collapsed.notes-collapsed {
+    grid-template-columns: 1fr; grid-template-areas: "top" "stage"; height: 100vh; height: 100dvh;
+  }
+  .shell.rail-collapsed .rail, .shell.notes-collapsed .notes { display: block; } /* [ and ] do not apply here; the drawers do */
+  .m-only { display: inline-block; }
+  .tb .full { display: none; }
+  .tb .short { display: inline; }
+  .topbar { gap: 8px; padding: 0 10px; }
+  .brand-text, .topbar-center, .jump, #btn-map, #btn-tour { display: none; }
+  .topbar-actions { margin-left: auto; gap: 6px; }
+  .tb { padding: 7px 10px; }
+  .rail, .notes {
+    position: fixed; top: var(--top-h); bottom: 0; width: min(320px, 86vw); z-index: 250;
+    transition: transform .22s ease; box-shadow: 0 0 40px rgba(0,0,0,.25);
+  }
+  .rail { left: 0; transform: translateX(-100%); border-right: none; }
+  .notes { right: 0; transform: translateX(100%); border-left: none; padding-bottom: 48px; }
+  .shell.rail-open .rail, .shell.notes-open .notes { transform: none; }
+  .scrim { position: fixed; inset: var(--top-h) 0 0 0; background: rgba(10,46,49,.45); z-index: 240; }
+  .shell.rail-open .scrim, .shell.notes-open .scrim { display: block; }
+  .stage-head { padding: 8px 10px; gap: 8px; }
+  .stage-title .t { font-size: 14px; white-space: normal; }
+  .stage-title .s { font-size: 11px; }
+  .nav { width: 34px; height: 34px; flex: none; }
+  /* fit-to-width frames; scroll when the screen is taller than the stage (landscape phones) */
+  .stage-body { padding: 0 10px 12px; gap: 12px; overflow: auto; justify-content: flex-start; align-items: flex-start; -webkit-overflow-scrolling: touch; }
+  .stage-body .frame { margin: auto; }
+  .frame.pip { right: 14px; bottom: 16px; }
+  .frame-cap { font-size: 11px; }
+  .overlay { padding: 8px; }
+  .overlay-body { padding: 12px; }
+  .toast { max-width: 90vw; bottom: 16px; }
+  .notes h2 { font-size: 16px; }
+}

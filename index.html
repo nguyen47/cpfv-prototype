@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F3F43">
 <title>Attachment 7-B · Interactive prototype</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&family=Roboto+Mono:wght@500;600&display=swap" rel="stylesheet">
@@ -21,9 +22,11 @@
     </div>
     <div class="topbar-center" id="crumb"></div>
     <div class="topbar-actions">
+      <button class="tb m-only" id="btn-rail" title="Flows and steps">Steps</button>
+      <button class="tb m-only" id="btn-notes" title="Notes for this step">Notes</button>
       <label class="jump"><span>Go to</span><input id="jump" type="text" placeholder="23-05" spellcheck="false" autocomplete="off"></label>
       <button class="tb" id="btn-map" title="Flow map (M)">Flow map</button>
-      <button class="tb toggle" id="btn-taps" title="Show tappable areas (T)">Tappable areas</button>
+      <button class="tb toggle" id="btn-taps" title="Show tappable areas (T)"><span class="full">Tappable areas</span><span class="short">Taps</span></button>
       <button class="tb toggle" id="btn-tour" title="Auto-advance (P)">Tour</button>
       <button class="tb" id="btn-help" title="Keyboard shortcuts (?)">?</button>
     </div>
@@ -44,6 +47,7 @@
 
   <aside class="notes" id="notes"></aside>
 
+  <div class="scrim" id="scrim"></div>
   <div class="toast" id="toast"></div>
 
   <div class="overlay" id="overlay" hidden>
